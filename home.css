@@ -90,3 +90,13 @@ p { margin: 12px 0 0; }
   .directory { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 380px) { .product-grid { grid-template-columns: 1fr; } }
+
+.demo-overview {
+  max-width: 46rem;
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--wash);
+}
+.demo-overview p { color: var(--muted); }
+.demo-overview .button { margin-top: 20px; }
