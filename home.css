@@ -126,3 +126,16 @@ p { margin: 12px 0 0; }
 #chat-tip { font-size: .875rem; color: var(--muted); margin: 0 0 12px; }
 @media (max-width: 800px) { .footer-layout { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 430px) { .footer-layout { grid-template-columns: 1fr; } }
+
+.coverage-strip { background: #382043; color: #fff4e8; overflow: hidden; }
+.coverage-strip .wrap { display: flex; justify-content: center; padding-block: 8px; }
+.coverage-text { display: inline-flex; align-items: baseline; flex-wrap: wrap; justify-content: center; column-gap: 9px; color: inherit; text-align: center; text-decoration: none; font-size: .9rem; }
+.coverage-text:hover { text-decoration: underline; }
+.coverage-text strong { font-size: 1.3rem; line-height: 1.25; font-weight: 850; letter-spacing: .055em; }
+.home-masthead .top { padding-block: 17px; }
+.home-masthead .menu { padding-block: 8px 12px; border-top: 1px solid var(--line); }
+.home-masthead .menu a:hover { color: var(--forest); }
+@media (prefers-reduced-motion: no-preference) {
+  .coverage-text { animation: coverage-arrive .75s ease-out both; }
+}
+@keyframes coverage-arrive { from { transform: translateX(30%); } to { transform: translateX(0); } }
