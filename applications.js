@@ -158,22 +158,126 @@ const catalog = {
 };
 const amount = label => [label, 'number'];
 const choices = (label, ...options) => [label, 'select', options];
+const delivery = choices('Statement delivery', 'Online statements', 'Paper statements');
+const funding = choices('Opening deposit source', 'Transfer from another account', 'Check deposit', 'Decide later');
+const start = choices('Preferred start', 'As soon as available', 'Within 30 days', 'Within 90 days', 'Just comparing options');
+const frequency = choices('Expected activity', 'Several times a week', 'Weekly', 'Monthly', 'Occasionally');
+const cardUse = choices('Primary use', 'Everyday purchases', 'Travel', 'Balance transfer', 'Business expenses');
+const autopay = choices('Payment preference', 'Full balance', 'A fixed amount', 'Minimum payment', 'Manual payments');
 const fields = {
-  deposit: [amount('Illustrative opening deposit (USD)'), choices('Primary use', 'Everyday spending', 'Saving toward a goal', 'Business expenses')],
-  cd: [amount('Illustrative opening deposit (USD)'), choices('Term', '6 months', '12 months', '24 months', '36 months', '60 months')],
-  credit: [amount('Illustrative credit amount (USD)'), choices('Preferred use', 'Everyday purchases', 'Travel', 'Balance transfer', 'Business expenses')],
-  mortgage: [amount('Illustrative loan amount (USD)'), choices('Loan term', '15 years', '20 years', '30 years')],
-  auto: [amount('Illustrative loan amount (USD)'), choices('Loan term', '36 months', '48 months', '60 months', '72 months')],
-  merchant: [choices('Payment channel', 'In person', 'Online', 'In person and online'), choices('Monthly volume range', 'Under $1,000', '$1,000–$10,000', 'Over $10,000')],
-  travel: [amount('Illustrative budget (USD)'), choices('Time frame', 'Within 3 months', '3–6 months', '6–12 months', 'More than a year')],
-  investing: [choices('Goal', 'Retirement', 'Long-term savings', 'Other financial goal'), choices('Time horizon', 'Up to 5 years', '5–10 years', 'More than 10 years')]
+  deposit: [
+    amount('Opening deposit (USD)'),
+    choices('Primary use', 'Everyday spending', 'Saving toward a goal', 'Business expenses'),
+    funding,
+    choices('Deposit frequency', 'Weekly', 'Every two weeks', 'Monthly', 'As needed'),
+    frequency,
+    delivery,
+    start
+  ],
+  cd: [
+    amount('Opening deposit (USD)'),
+    choices('Term', '6 months', '12 months', '24 months', '36 months', '60 months'),
+    funding,
+    choices('Interest preference', 'Add interest to the balance', 'Receive interest separately', 'Decide later'),
+    choices('At maturity', 'Renew the CD', 'Move funds to savings', 'Review options later'),
+    delivery,
+    start
+  ],
+  credit: [
+    amount('Requested credit amount (USD)'), cardUse,
+    choices('Expected monthly spending', 'Under $500', '$500–$1,499', '$1,500–$2,999', '$3,000 or more'),
+    autopay,
+    choices('Preferred payment date', 'Beginning of the month', 'Middle of the month', 'End of the month', 'No preference'),
+    delivery,
+    start
+  ],
+  mortgage: [
+    amount('Requested loan amount (USD)'),
+    choices('Loan term', '15 years', '20 years', '30 years'),
+    choices('Property type', 'Single-family home', 'Condominium', 'Townhouse', 'Other residential property'),
+    choices('Property use', 'Primary residence', 'Second home', 'Rental property'),
+    choices('Rate preference', 'Fixed rate', 'Adjustable rate', 'Compare both'),
+    choices('Expected timing', 'Within 30 days', 'Within 90 days', 'Within 6 months', 'Just planning'),
+    delivery
+  ],
+  equity: [
+    amount('Requested credit line (USD)'),
+    choices('Property type', 'Single-family home', 'Condominium', 'Townhouse', 'Other residential property'),
+    choices('Intended use', 'Home improvements', 'Large purchase', 'Consolidate balances', 'Other planned expense'),
+    choices('Draw preference', 'As needed', 'One initial draw', 'Decide later'),
+    choices('Payment preference', 'Automatic payments', 'Manual payments', 'Decide later'),
+    delivery,
+    start
+  ],
+  auto: [
+    amount('Requested loan amount (USD)'),
+    choices('Loan term', '36 months', '48 months', '60 months', '72 months'),
+    choices('Vehicle type', 'Car', 'SUV', 'Pickup', 'Van'),
+    choices('Powertrain', 'Gasoline', 'Hybrid', 'Electric', 'No preference'),
+    choices('Payment preference', 'Automatic payments', 'Manual payments', 'Decide later'),
+    delivery,
+    start
+  ],
+  merchant: [
+    choices('Payment channel', 'In person', 'Online', 'In person and online'),
+    choices('Monthly volume range', 'Under $1,000', '$1,000–$10,000', 'Over $10,000'),
+    choices('Business category', 'Retail', 'Food and hospitality', 'Professional services', 'Other'),
+    choices('Checkout setup', 'Countertop terminal', 'Mobile reader', 'Online checkout', 'Multiple setups'),
+    choices('Reporting frequency', 'Daily', 'Weekly', 'Monthly'),
+    choices('Settlement preference', 'Daily', 'Weekly', 'Decide later'),
+    start
+  ],
+  travel: [
+    amount('Planned budget (USD)'),
+    choices('Time frame', 'Within 3 months', '3–6 months', '6–12 months', 'More than a year'),
+    choices('Destination region', 'United States', 'Caribbean', 'Europe', 'Asia-Pacific', 'Other or undecided'),
+    choices('Trip length', 'Weekend', 'Up to a week', 'One to two weeks', 'More than two weeks'),
+    choices('Group size', 'One traveler', 'Two travelers', 'Three or four travelers', 'Five or more travelers'),
+    choices('Activity preference', 'Sightseeing', 'Outdoor activities', 'Dining and culture', 'Relaxation'),
+    choices('Dates', 'Fixed', 'Flexible', 'Undecided')
+  ],
+  investing: [
+    choices('Goal', 'Retirement', 'Long-term savings', 'Other financial goal'),
+    choices('Time horizon', 'Up to 5 years', '5–10 years', 'More than 10 years'),
+    amount('Planned starting contribution (USD)'),
+    choices('Contribution schedule', 'One-time', 'Monthly', 'Quarterly', 'As funds are available'),
+    choices('Account management preference', 'Self-directed', 'Guidance', 'Compare both'),
+    choices('Topics to explore', 'Asset allocation', 'Fees', 'Saving regularly', 'Account types'),
+    delivery
+  ]
 };
+
+const productQuestions = {
+  'everyday-checking': choices('Direct deposit preference', 'Set up direct deposit', 'Decide later'),
+  'student-checking': choices('Banking priorities', 'Managing school expenses', 'Receiving income', 'Saving for a goal'),
+  'reserve-savings': choices('Savings goal', 'Emergency reserve', 'Major purchase', 'General savings'),
+  'cash-back-card': choices('Preferred rewards category', 'Groceries', 'Dining', 'Fuel', 'General purchases'),
+  'travel-rewards-card': choices('Preferred rewards redemption', 'Flights', 'Hotels', 'General travel'),
+  'travel-rewards': choices('Preferred rewards redemption', 'Flights', 'Hotels', 'General travel'),
+  'low-interest-card': choices('Priority', 'Purchase interest', 'Balance transfer interest', 'Compare both'),
+  'balance-transfer-card': amount('Balance planned for transfer (USD)'),
+  'student-card': choices('Preferred account alerts', 'Purchase alerts', 'Payment reminders', 'Both'),
+  'secured-card': amount('Planned security deposit (USD)'),
+  'business-rewards-card': choices('Typical business purchases', 'Supplies', 'Travel', 'Online services', 'General expenses'),
+  'home-purchase': choices('Purchase stage', 'Planning', 'House hunting', 'Property selected'),
+  'home-refinance': choices('Refinance goal', 'Lower monthly payment', 'Change loan term', 'Review loan options'),
+  'new-auto': choices('Purchase stage', 'Comparing vehicles', 'Vehicle selected', 'Ready to purchase'),
+  'used-auto': choices('Seller type', 'Dealership', 'Private seller', 'Undecided'),
+  'auto-refinance': choices('Refinance goal', 'Lower monthly payment', 'Change loan term', 'Review loan options'),
+  'business-checking': choices('Business structure', 'Sole proprietorship', 'Partnership', 'LLC', 'Corporation', 'Other'),
+  'business-credit': choices('Planned use of credit', 'Inventory', 'Equipment', 'Working capital', 'Other business expenses'),
+  'retirement-account': choices('Account type to explore', 'Traditional IRA', 'Roth IRA', 'Compare both'),
+  'investment-consultation': choices('Preferred meeting format', 'Video', 'Phone', 'Decide later')
+};
+
 const get = id => document.getElementById(id);
 const productId = new URLSearchParams(location.search).get('product');
 const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 function setup(product) {
-  const definitions = fields[product.form];
+  const group = productId === 'home-equity' ? 'equity' : product.form;
+  const definitions = [...fields[group]];
+  if (productQuestions[productId]) definitions.push(productQuestions[productId]);
   const form = get('application-form');
   const review = get('application-review');
   const receipt = get('application-receipt');
