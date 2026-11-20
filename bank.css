@@ -1,30 +1,30 @@
 :root {
-  color: #152435;
-  background: #f5f7fa;
-  --green: #164875;
-  --line: #dce4ec;
+  color: #302337;
+  background: #faf7fb;
+  --green: #5d3468;
+  --line: #e5dbe8;
 }
 
 .bank-header {
-  background: #10263d;
+  background: #382043;
   padding-block: 21px;
 }
 
 .bank-header .brand { letter-spacing: -.025em; }
-.bank-header .brand small { color: #c9d9e8; }
+.bank-header .brand small { color: #ead7ef; }
 .bank-header .mark {
   display: grid;
   width: 42px;
   height: 42px;
   place-items: center;
   padding: 0;
-  background: #dbeefc;
-  color: #153d63;
+  background: #f5cd9e;
+  color: #53265d;
   border-radius: 7px;
   letter-spacing: -.06em;
 }
 
-.staff-link { color: #ecf5ff; font-weight: 600; white-space: nowrap; }
+.staff-link { color: #faedf9; font-weight: 600; white-space: nowrap; }
 .bank-nav { background: white; border-bottom: 1px solid var(--line); }
 .bank-nav > div {
   max-width: 1184px;
@@ -36,52 +36,74 @@
 .bank-nav a {
   padding: 13px 2px 11px;
   border-bottom: 3px solid transparent;
-  color: #354c63;
+  color: #63546a;
   font-weight: 650;
   text-decoration: none;
 }
-.bank-nav a:hover, .bank-nav a:focus-visible { border-color: #27699d; color: #164875; }
+.bank-nav a:hover, .bank-nav a:focus-visible { border-color: #87517d; color: #5d3468; }
 .intro { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-.intro p, .card span, th, footer { color: #4b6075; }
+.intro p, .card span, th, footer { color: #63546a; }
 main button { border-radius: 7px; }
 .hero {
-  background: radial-gradient(ellipse at 96% -30%, #326994, transparent 64%),
-    linear-gradient(110deg, #10263d, #123d62);
+  background: radial-gradient(ellipse at 96% -30%, #805184, transparent 64%),
+    linear-gradient(110deg, #382043, #5d3468);
   min-height: 160px;
   border-radius: 12px;
 }
-.hero p { color: #e0edfa; }
+.hero p { color: #faeaf7; }
 .currency {
   align-self: flex-start;
   padding: 5px 9px;
-  border: 1px solid #8baac7;
+  border: 1px solid #ba9ac1;
   border-radius: 5px;
   font-size: 14px;
   letter-spacing: .06em;
 }
-.card, .activity { border-radius: 10px; box-shadow: 0 2px 5px #10263d08; }
+.card, .activity { border-radius: 10px; box-shadow: 0 2px 5px #38204308; }
 .card {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
   gap: 16px;
-  border-top: 3px solid #2f6692;
+  border-top: 3px solid #87517d;
 }
 .card > div:last-child { text-align: right; }
 .card h3 { font-size: 17px; line-height: 1.35; margin: 0 0 6px; }
 .card strong { line-height: 1.2; font-size: clamp(18px, 3vw, 26px); }
-select, input { border-color: #a8b9ca; }
-.activity thead { background: #f2f6fa; }
+select, input { border-color: #8e7694; }
+.activity thead { background: #f6eff7; }
 .activity th { font-weight: 650; }
 .activity td { font-size: 15px; }
 .credit { color: #16654e; }
 footer { padding-top: 16px; border-top: 1px solid var(--line); }
-:focus-visible { outline: 3px solid #528dc3; outline-offset: 3px; }
+:focus-visible { outline: 3px solid #a15b26; outline-offset: 3px; }
 
-body.staff-page header { background: #10263d; }
-body.staff-page header a { color: #ecf5ff; }
-body.staff-page button { background: #164875; }
+body.staff-page header { background: #382043; }
+body.staff-page header a { color: #faedf9; }
+body.staff-page button { background: #5d3468; }
 body.staff-page section { border-color: var(--line); border-radius: 10px; }
+body.staff-page :focus-visible { outline-color: #a15b26; }
+body.staff-page dialog {
+  width: min(440px, calc(100% - 32px));
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px;
+  color: inherit;
+}
+body.staff-page dialog::backdrop { background: #34203d99; }
+body.staff-page [hidden] { display: none; }
+.management-list { list-style: none; padding: 0; }
+.management-list li {
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 0;
+}
+.management-list li span { flex: 1 1 260px; }
+.management-list li button { margin: 0; }
+#manage-error { color: #963138; }
 
 @media (max-width: 680px) {
   .cards { grid-template-columns: 1fr; }

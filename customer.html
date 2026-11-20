@@ -47,7 +47,17 @@
             <button class="button">Verify code</button>
           </form>
         </section>
-        <section id="portal" hidden><h2 id="customer-heading">Account overview</h2><select id="customer" hidden aria-label="Customer"></select><div id="records" aria-live="polite"></div></section>
+        <section id="portal" hidden>
+          <h2 id="customer-heading">Account overview</h2><select id="customer" hidden aria-label="Customer"></select>
+          <div id="records" aria-live="polite"></div>
+          <form id="transfer-form" hidden>
+            <h3>Transfer funds</h3>
+            <label for="transfer-from">From</label><select id="transfer-from" required></select>
+            <label for="transfer-to">To</label><select id="transfer-to" required></select>
+            <label for="transfer-amount">Amount in USD</label><input id="transfer-amount" type="number" min="0.01" max="21474836.47" step="0.01" required>
+            <button class="button">Transfer funds</button>
+          </form>
+        </section>
         <button class="button" id="logout" hidden>Sign out</button>
       </div>
     </div>
