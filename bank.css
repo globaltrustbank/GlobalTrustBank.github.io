@@ -12,17 +12,13 @@
 
 .bank-header .brand { letter-spacing: -.025em; }
 .bank-header .brand small { color: #ead7ef; }
-.bank-header .mark {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  padding: 0;
-  background: #f5cd9e;
-  color: #53265d;
-  border-radius: 7px;
-  letter-spacing: -.06em;
+.globaltrust-mark {
+  display: block;
+  flex: none;
+  border: 1px solid #ab809e;
+  border-radius: 11px;
 }
+.staff-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 
 .staff-link { color: #faedf9; font-weight: 600; white-space: nowrap; }
 .bank-nav { background: white; border-bottom: 1px solid var(--line); }

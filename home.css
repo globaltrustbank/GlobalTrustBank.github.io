@@ -20,8 +20,7 @@ a { color: var(--forest); text-underline-offset: .23em; }
 .top { justify-content: space-between; gap: 18px; padding-block: 20px; }
 .identity { gap: 12px; color: var(--ink); text-decoration: none; font-size: 23px; font-weight: 760; line-height: 1.1; }
 .identity small { display: block; margin-top: 5px; letter-spacing: .12em; text-transform: uppercase; font-size: .67rem; }
-.emblem { background: #49264f; color: #fff2df; border-radius: 50%; display: grid; place-content: center; width: 43px; height: 43px; font: 700 21px/1 Georgia, serif; grid-auto-flow: column; }
-.emblem span { color: #f0b778; }
+.globaltrust-mark { display: block; flex: none; width: 43px; height: 43px; }
 .tools { gap: 23px; }
 .menu { display: flex; flex-wrap: wrap; gap: 0 26px; padding-bottom: 12px; }
 .menu a { color: var(--ink); font-size: 15px; font-weight: 620; padding-block: 5px; text-decoration: none; }
@@ -83,7 +82,7 @@ p { margin: 12px 0 0; }
   .tools > a:not(.button) { display: none; }
   .tools .button { font-size: .85rem; padding: 8px 10px; }
   .identity { font-size: 18px; gap: 7px; }
-  .emblem { width: 34px; height: 34px; font-size: 17px; }
+  .globaltrust-mark { width: 34px; height: 34px; }
   .menu { gap: 0 14px; }
   .hero-layout, .details-grid, .planning-layout, .resource-row, .footer-layout, .calculator form { grid-template-columns: 1fr; }
   .planning-links { justify-content: flex-start; }
