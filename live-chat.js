@@ -24,9 +24,11 @@ async function updateThread() {
   if (!customer || reading) return;
   reading = true;
   try {
-    const messages = unwrap(await client.from('gt_support_messages')
-      .select('id,sender_id,body').eq('customer_id', customer)
-      .order('id', { ascending: false }).limit(100)).reverse();
+    const query = columns => client.from('gt_support_messages').select(columns)
+      .eq('customer_id', customer).order('id', { ascending: false }).limit(100);
+    let result = await query('id,sender_id,body,is_automated');
+    if (result.error?.code === '42703') result = await query('id,sender_id,body');
+    const messages = unwrap(result).reverse();
     if (customer !== thread.value) return;
     const ids = messages.map(message => message.id).join(',');
     if (lastIds === ids) return;
@@ -37,9 +39,9 @@ async function updateThread() {
       const item = document.createElement('li');
       const author = document.createElement('span');
       author.className = 'chat-author';
-      author.textContent = message.sender_id === userId ? 'You'
+      author.textContent = message.is_automated ? 'Automated reply' : message.sender_id === userId ? 'You'
         : message.sender_id === customer ? 'Customer' : 'Support';
-      item.classList.toggle('mine', message.sender_id === userId);
+      item.classList.toggle('mine', !message.is_automated && message.sender_id === userId);
       item.append(author, document.createTextNode(message.body));
       log.append(item);
     }
