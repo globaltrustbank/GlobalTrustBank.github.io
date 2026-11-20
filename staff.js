@@ -57,6 +57,7 @@ async function loadRecords() {
 
 async function refresh() {
   const { session } = unwrap(await client.auth.getSession());
+  if (customerPortal) get('registration').hidden = true;
   get('sign-in').hidden = Boolean(session);
   get('logout').hidden = !session;
   get('mfa').hidden = true;
@@ -85,9 +86,15 @@ async function refresh() {
     get('mfa').hidden = false;
     return;
   }
-  let query = client.from('gt_customers').select('id,display_name').order('display_name');
-  if (customerPortal) query = query.eq('id', session.user.id);
-  const customers = unwrap(await query);
+  const customerQuery = () => {
+    const query = client.from('gt_customers').select('id,display_name').order('display_name');
+    return customerPortal ? query.eq('id', session.user.id) : query;
+  };
+  let customers = unwrap(await customerQuery());
+  if (customerPortal && !customers.length && session.user.user_metadata?.gt_customer_signup === true) {
+    unwrap(await client.rpc('gt_open_demo_account'));
+    customers = unwrap(await customerQuery());
+  }
   if (customerPortal && !customers.length) {
     report('Your customer profile has not been set up yet.');
     return;
@@ -118,6 +125,43 @@ bind('login', async () => {
   get('login').reset();
   await refresh();
 });
+if (customerPortal) {
+  function showRegistration(open) {
+    get('registration').hidden = !open;
+    get('sign-in').hidden = open;
+    get(open ? 'login' : 'signup').reset();
+    get(open ? 'signup-name' : 'email').focus();
+    report('');
+  }
+
+  get('show-signup').addEventListener('click', () => showRegistration(true));
+  get('show-signin').addEventListener('click', () => showRegistration(false));
+  bind('signup', async () => {
+    const displayName = get('signup-name').value.trim();
+    if (!displayName) {
+      report('Enter a display name.');
+      get('signup-name').focus();
+      return;
+    }
+    const email = get('signup-email').value.trim();
+    const { session } = unwrap(await client.auth.signUp({
+      email,
+      password: get('signup-password').value,
+      options: {
+        emailRedirectTo: new URL('./customer.html', location.href).href,
+        data: { gt_customer_signup: true, gt_display_name: displayName }
+      }
+    }));
+    if (session) {
+      get('signup').reset();
+      await refresh();
+      return;
+    }
+    showRegistration(false);
+    get('email').value = email;
+    report('Check your email for a confirmation link, then return to sign in.');
+  });
+}
 bind('verify', async () => {
   const code = get('code').value;
   get('verify').reset();

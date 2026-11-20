@@ -26,6 +26,18 @@
             <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required>
             <button class="button">Continue</button>
           </form>
+          <p>New to GlobalTrust? <button class="form-link" id="show-signup" type="button">Create an account</button></p>
+        </section>
+        <section id="registration" hidden>
+          <h2>Create an account</h2>
+          <form id="signup">
+            <label for="signup-name">Display name</label><input id="signup-name" autocomplete="nickname" maxlength="80" required>
+            <label for="signup-email">Email address</label><input id="signup-email" type="email" autocomplete="email" required>
+            <label for="signup-password">Password</label><input id="signup-password" type="password" autocomplete="new-password" minlength="12" aria-describedby="password-help" required>
+            <small id="password-help">Use at least 12 characters.</small>
+            <button class="button">Create account</button>
+          </form>
+          <p>Already have an account? <button class="form-link" id="show-signin" type="button">Sign in</button></p>
         </section>
         <section id="mfa" hidden>
           <h2>Verify your sign-in</h2>

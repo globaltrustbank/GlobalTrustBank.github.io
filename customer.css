@@ -8,6 +8,8 @@
 .customer-panel button { margin-top: 15px; }
 .customer-panel button:disabled { opacity: .65; }
 .customer-panel button[hidden] { display: none; }
+.customer-panel .form-link { padding: 0; margin: 0; background: transparent; border: 0; color: var(--forest); font: inherit; font-weight: 660; text-decoration: underline; cursor: pointer; }
+.customer-panel form small { display: block; margin-top: 5px; color: var(--muted); }
 .customer-panel h3 { margin-top: 18px; }
 .customer-panel ul { padding-left: 20px; margin-block: 8px; }
 .customer-panel li { padding-block: 3px; }
