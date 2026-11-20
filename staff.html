@@ -1,23 +1,39 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Review how staff tools support assigned accounts in a private test environment.">
-  <link rel="icon" type="image/svg+xml" href="./globaltrust-mark.svg">
-  <link rel="stylesheet" href="./home.css">
-  <title>Staff demo overview | GlobalTrust Financial Bank</title>
-</head>
-<body>
-  <a class="skip" href="#content">Skip to content</a>
-  <header class="masthead"><div class="wrap top">
-    <a class="identity" href="./"><img class="globaltrust-mark" src="./globaltrust-mark.svg" width="43" height="43" alt=""><span>GlobalTrust<small>Financial Bank</small></span></a>
-    <a href="./help.html">Help Center</a>
-  </div></header>
-  <main id="content">
-    <section class="subhero"><div class="wrap"><h1>Staff demo overview</h1><p>Review how staff tools support assigned accounts in a private test environment.</p></div></section>
-    <section class="wrap section"><div class="demo-overview"><h2>Staff tools</h2><p>The test workspace supports account funding, suspension, reactivation, and transaction reversals. Staff controls are available in the private test workspace.</p><a class="button" href="./help.html">Open Help Center</a></div></section>
-  </main>
-  <footer class="footer"><div class="wrap">This is a simulated account with virtual funds.</div></footer>
-</body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="./globaltrust-mark.svg"><title>Staff Access | GlobalTrust Financial Bank</title>
+<style>
+:root{font:16px/1.55 "Segoe UI",system-ui,sans-serif;color:#302337;background:#faf7fb}*{box-sizing:border-box}body{margin:0}header{background:#382043;color:white;padding:20px max(5%,calc((100% - 960px)/2));display:flex;justify-content:space-between;align-items:center;gap:15px}header a{color:#faedf9}main{max-width:960px;margin:auto;padding:30px 20px}h1{font-size:clamp(28px,6vw,40px);letter-spacing:-.04em;margin:0 0 16px}h2{margin:0 0 12px;font-size:21px}section{background:white;border:1px solid #e5dbe8;border-radius:16px;padding:22px;margin-bottom:16px}form{max-width:375px}label{display:block;font-weight:650;margin:10px 0 4px}input,select,button{font:inherit;border-radius:8px;padding:8px 12px}input,select{width:100%;border:1px solid #8e7694;background:white;color:inherit}button{background:#5d3468;color:white;border:0;font-weight:650;cursor:pointer;margin-top:14px}button:disabled{opacity:.65;cursor:wait}#notice{color:#963138}img{max-width:100%}footer{font-size:14px;color:#63546a}ul{padding-left:22px}li{padding:3px 0}:focus-visible{outline:3px solid #35a783;outline-offset:3px}
+</style>
+<link rel="stylesheet" href="./bank.css">
+<body class="staff-page">
+<header><a class="staff-brand" href="./"><img class="globaltrust-mark" src="./globaltrust-mark.svg" width="43" height="43" alt=""><strong>GlobalTrust Financial Bank</strong></a><a href="./dashboard.html">Account overview</a></header>
+<main>
+<h1>Staff access</h1>
+<p class="staff-demo-notice">This is a simulated account with virtual funds.</p>
+<section id="sign-in" hidden><h2>Sign in</h2><form id="login">
+<label for="email">Email</label><input id="email" type="email" autocomplete="username" required>
+<label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required>
+<button>Continue</button></form></section>
+<section id="mfa" hidden><h2>Authenticator verification</h2>
+<div id="enrollment" hidden><p>Scan this code with your authenticator app.</p><img id="qr" width="176" height="176" alt="Authenticator enrollment QR code"></div>
+<form id="verify"><label for="code">Six-digit code</label><input id="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required><button>Verify code</button></form></section>
+<p id="notice" role="status"></p>
+<section id="portal" hidden><h2>Customer records</h2><label for="customer">Customer</label><select id="customer"></select><div id="records" aria-live="polite"></div></section>
+<button id="staff-mfa" type="button" hidden>Use an authenticator</button>
+<button id="skip-mfa" type="button" hidden>Return to customer records</button>
+<dialog id="manage-dialog" aria-labelledby="manage-title">
+  <form id="manage-form">
+    <h2 id="manage-title"></h2><p id="manage-account"></p>
+    <label id="fund-label" for="fund-amount" hidden>Amount in USD</label>
+    <input id="fund-amount" type="number" min="0.01" max="21474836.47" step="0.01" hidden>
+    <p id="manage-error" role="alert"></p>
+    <button type="button" id="manage-cancel">Cancel</button>
+    <button type="submit" id="manage-submit">Confirm</button>
+  </form>
+</dialog>
+<button id="logout" hidden>Sign out</button>
+</main>
+<script type="module" src="./staff.js"></script>
 </html>
