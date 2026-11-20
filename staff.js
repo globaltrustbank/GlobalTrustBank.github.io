@@ -142,10 +142,8 @@ function openManagement(label, description, action) {
 async function refresh() {
   const { session } = unwrap(await client.auth.getSession());
   admin = false;
-  if (!customerPortal) {
-    get('staff-mfa').hidden = true;
-    get('skip-mfa').hidden = true;
-  }
+  get(customerPortal ? 'customer-mfa' : 'staff-mfa').hidden = true;
+  get('skip-mfa').hidden = true;
   if (customerPortal) get('registration').hidden = true;
   get('sign-in').hidden = Boolean(session);
   get('logout').hidden = !session;
@@ -163,8 +161,14 @@ async function refresh() {
     admin = result.data === true;
   }
   const { currentLevel } = unwrap(await client.auth.mfa.getAuthenticatorAssuranceLevel());
-  if (currentLevel !== 'aal2' && (!admin || requestAuthenticator)) {
-    if (admin) get('skip-mfa').hidden = false;
+  let optionalAuthenticator = admin;
+  if (customerPortal && currentLevel !== 'aal2') {
+    const result = await client.rpc('gt_customer_auth_ready');
+    if (result.error && result.error.code !== 'PGRST202') throw result.error;
+    optionalAuthenticator = result.data === true;
+  }
+  if (currentLevel !== 'aal2' && (!optionalAuthenticator || requestAuthenticator)) {
+    if (optionalAuthenticator) get('skip-mfa').hidden = false;
     const factors = unwrap(await client.auth.mfa.listFactors());
     const verified = factors.totp.find(item => item.status === 'verified');
     if (verified) {
@@ -181,7 +185,7 @@ async function refresh() {
     get('mfa').hidden = false;
     return;
   }
-  if (admin) get('staff-mfa').hidden = currentLevel === 'aal2';
+  if (optionalAuthenticator) get(customerPortal ? 'customer-mfa' : 'staff-mfa').hidden = currentLevel === 'aal2';
   const customerQuery = () => {
     const query = client.from('gt_customers').select('id,display_name').order('display_name');
     if (customerPortal) return query.eq('id', session.user.id);
@@ -293,8 +297,7 @@ get('logout').addEventListener('click', async () => {
     await refresh();
   } catch (error) { report(error.message); }
 });
-if (!customerPortal) {
-  get('staff-mfa').addEventListener('click', () => {
+get(customerPortal ? 'customer-mfa' : 'staff-mfa').addEventListener('click', () => {
     requestAuthenticator = true;
     refresh().catch(error => report(error.message));
   });
@@ -303,6 +306,7 @@ if (!customerPortal) {
     report('');
     refresh().catch(error => report(error.message));
   });
+if (!customerPortal) {
   get('manage-cancel').addEventListener('click', () => get('manage-dialog').close());
   get('manage-form').addEventListener('submit', async event => {
     event.preventDefault();

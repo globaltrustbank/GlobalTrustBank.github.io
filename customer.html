@@ -45,6 +45,7 @@
           <form id="verify">
             <label for="code">Six-digit authenticator code</label><input id="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
             <button class="button">Verify code</button>
+            <button class="form-link" id="skip-mfa" type="button" hidden>Return to accounts</button>
           </form>
         </section>
         <section id="portal" hidden>
@@ -58,6 +59,7 @@
             <button class="button">Transfer funds</button>
           </form>
         </section>
+        <button class="form-link" id="customer-mfa" type="button" hidden>Set up an authenticator</button>
         <button class="button" id="logout" hidden>Sign out</button>
       </div>
     </div>
