@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Staff Access | GlobalTrust Financial Bank</title>
+<style>
+:root{font:16px/1.55 "Segoe UI",system-ui,sans-serif;color:#172a30;background:#f3f6f5}*{box-sizing:border-box}body{margin:0}header{background:#102a29;color:white;padding:20px max(5%,calc((100% - 960px)/2));display:flex;justify-content:space-between;align-items:center;gap:15px}header a{color:#c9f7de}main{max-width:960px;margin:auto;padding:30px 20px}h1{font-size:clamp(28px,6vw,40px);letter-spacing:-.04em;margin:0 0 16px}h2{margin:0 0 12px;font-size:21px}section{background:white;border:1px solid #e0e8e5;border-radius:16px;padding:22px;margin-bottom:16px}form{max-width:375px}label{display:block;font-weight:650;margin:10px 0 4px}input,select,button{font:inherit;border-radius:8px;padding:8px 12px}input,select{width:100%;border:1px solid #b9cbc4;background:white;color:inherit}button{background:#065b49;color:white;border:0;font-weight:650;cursor:pointer;margin-top:14px}button:disabled{opacity:.65;cursor:wait}#notice{color:#963138}img{max-width:100%}footer{font-size:14px;color:#526762}ul{padding-left:22px}li{padding:3px 0}:focus-visible{outline:3px solid #35a783;outline-offset:3px}
+</style>
+<link rel="stylesheet" href="./bank.css">
+<body class="staff-page">
+<header><strong>GlobalTrust Financial Bank</strong><a href="./">Account overview</a></header>
+<main>
+<h1>Staff access</h1>
+<section id="sign-in" hidden><h2>Sign in</h2><form id="login">
+<label for="email">Email</label><input id="email" type="email" autocomplete="username" required>
+<label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required>
+<button>Continue</button></form></section>
+<section id="mfa" hidden><h2>Authenticator verification</h2>
+<div id="enrollment" hidden><p>Scan this code with your authenticator app.</p><img id="qr" width="176" height="176" alt="Authenticator enrollment QR code"></div>
+<form id="verify"><label for="code">Six-digit code</label><input id="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required><button>Verify code</button></form></section>
+<p id="notice" role="status"></p>
+<section id="portal" hidden><h2>Customer records</h2><label for="customer">Customer</label><select id="customer"></select><div id="records" aria-live="polite"></div></section>
+<button id="logout" hidden>Sign out</button>
+<footer>This is a simulated account with virtual funds.</footer>
+</main>
+<script type="module" src="./staff.js"></script>
+</html>
