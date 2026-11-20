@@ -19,7 +19,7 @@
   border-radius: 11px;
 }
 .staff-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.staff-demo-notice { margin: 0 0 20px; color: #63546a; }
+.staff-site-info { margin: 0 0 20px; color: #63546a; }
 
 .staff-link { color: #faedf9; font-weight: 600; white-space: nowrap; }
 .bank-nav { background: white; border-bottom: 1px solid var(--line); }
