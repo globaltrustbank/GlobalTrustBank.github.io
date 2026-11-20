@@ -6,8 +6,9 @@
 <style>
 :root{font:16px/1.55 "Segoe UI",system-ui,sans-serif;color:#302337;background:#faf7fb}*{box-sizing:border-box}body{margin:0}header{background:#382043;color:white;padding:20px max(5%,calc((100% - 960px)/2));display:flex;justify-content:space-between;align-items:center;gap:15px}header a{color:#faedf9}main{max-width:960px;margin:auto;padding:30px 20px}h1{font-size:clamp(28px,6vw,40px);letter-spacing:-.04em;margin:0 0 16px}h2{margin:0 0 12px;font-size:21px}section{background:white;border:1px solid #e5dbe8;border-radius:16px;padding:22px;margin-bottom:16px}form{max-width:375px}label{display:block;font-weight:650;margin:10px 0 4px}input,select,button{font:inherit;border-radius:8px;padding:8px 12px}input,select{width:100%;border:1px solid #8e7694;background:white;color:inherit}button{background:#5d3468;color:white;border:0;font-weight:650;cursor:pointer;margin-top:14px}button:disabled{opacity:.65;cursor:wait}#notice{color:#963138}img{max-width:100%}footer{font-size:14px;color:#63546a}ul{padding-left:22px}li{padding:3px 0}:focus-visible{outline:3px solid #35a783;outline-offset:3px}
 </style>
+<link rel="stylesheet" href="./home.css">
 <link rel="stylesheet" href="./bank.css">
-<body class="staff-page">
+<body id="top" class="staff-page">
 <header><a class="staff-brand" href="./"><img class="globaltrust-mark" src="./globaltrust-mark.svg" width="43" height="43" alt=""><strong>GlobalTrust Financial Bank</strong></a><a href="./">Home</a></header>
 <main>
 <h1>Staff access</h1>
@@ -35,5 +36,16 @@
 </dialog>
 <button id="logout" hidden>Sign out</button>
 </main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-layout">
+      <div><a class="wordmark" href="./"><img src="./globaltrust-mark.svg" width="42" height="42" alt="">GlobalTrust Financial Bank</a></div>
+      <nav aria-label="Support"><h2>Support</h2><a href="./help.html">Help Center</a><a href="./live-chat.html">Live chat</a><a href="./security.html">Security Center</a></nav>
+      <nav aria-label="Account access"><h2>Accounts</h2><a href="./customer.html">Customer sign-in</a><a href="./customer.html#create-account">Create an account</a><a href="./staff.html">Staff access</a></nav>
+      <nav aria-label="About GlobalTrust"><h2>GlobalTrust</h2><a href="./about.html">About GlobalTrust</a><a href="./privacy.html">Privacy &amp; site use</a><a href="./site-map.html">Site map</a></nav>
+    </div>
+    <div class="footer-bottom"><a href="./#account-notice">About these accounts</a><a class="back-top" href="#top"><span aria-hidden="true">↑</span> Back to top</a></div>
+  </div>
+</footer>
 <script type="module" src="./staff.js"></script>
 </html>

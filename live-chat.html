@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Chat | GlobalTrust Financial Bank</title>
+  <link rel="icon" type="image/svg+xml" href="./globaltrust-mark.svg">
+  <link rel="stylesheet" href="./home.css">
+</head>
+<body id="top">
+<header class="masthead"><div class="wrap top">
+  <a class="identity" href="./"><img class="globaltrust-mark" src="./globaltrust-mark.svg" width="43" height="43" alt=""><span>GlobalTrust<small>Financial Bank</small></span></a>
+  <a href="./help.html">Help Center</a>
+</div></header>
+<main class="wrap section chat-page">
+  <h1>Live chat</h1>
+  <p id="chat-status" role="status">Connecting to support…</p>
+  <div id="chat-login" hidden><a class="button" href="./customer.html">Customer sign-in</a> <a href="./staff.html">Staff access</a></div>
+  <section id="chat-room" hidden aria-label="Support conversation">
+    <label id="chat-thread-label" for="chat-thread" hidden>Customer conversation</label>
+    <select id="chat-thread" hidden></select>
+    <ol id="chat-messages" class="chat-messages" role="log" aria-label="Messages"></ol>
+    <form id="chat-form">
+      <label for="chat-message">Message</label>
+      <textarea id="chat-message" maxlength="1500" rows="3" required aria-describedby="chat-tip"></textarea>
+      <p id="chat-tip">Keep passwords, verification codes, and personal financial information out of chat.</p>
+      <button class="button">Send message</button>
+    </form>
+  </section>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-layout">
+      <div><a class="wordmark" href="./"><img src="./globaltrust-mark.svg" width="42" height="42" alt="">GlobalTrust Financial Bank</a></div>
+      <nav aria-label="Support"><h2>Support</h2><a href="./help.html">Help Center</a><a href="./live-chat.html">Live chat</a><a href="./security.html">Security Center</a></nav>
+      <nav aria-label="Account access"><h2>Accounts</h2><a href="./customer.html">Customer sign-in</a><a href="./customer.html#create-account">Create an account</a><a href="./staff.html">Staff access</a></nav>
+      <nav aria-label="About GlobalTrust"><h2>GlobalTrust</h2><a href="./about.html">About GlobalTrust</a><a href="./privacy.html">Privacy &amp; site use</a><a href="./site-map.html">Site map</a></nav>
+    </div>
+    <div class="footer-bottom"><a href="./#account-notice">About these accounts</a><a class="back-top" href="#top"><span aria-hidden="true">↑</span> Back to top</a></div>
+  </div>
+</footer>
+<script type="module" src="./live-chat.js"></script>
+</body>
+</html>
