@@ -1,0 +1,20 @@
+.apply-section { border-top: 1px solid var(--line); }
+.apply-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin-top: 20px; }
+.apply-card { padding: 20px; border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; align-items: flex-start; }
+.apply-card p { color: var(--muted); margin-bottom: 16px; }
+.apply-card .button { margin-top: auto; }
+.subhero .application-jump:not(:first-of-type) { margin-left: 6px; }
+.application { max-width: 50rem; }
+.application h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
+.application-panel { margin-top: 24px; border: 1px solid var(--line); border-radius: 14px; padding: clamp(16px, 4vw, 30px); }
+.application-panel > p:first-child { margin: 0 0 16px; color: var(--muted); }
+#application-fields { display: grid; gap: 14px; margin-bottom: 16px; }
+#application-fields label { font-weight: 650; }
+#application-fields input, #application-fields select { margin-top: 4px; width: 100%; display: block; padding: 9px; border: 1px solid #9985a1; border-radius: 7px; font: inherit; box-sizing: border-box; }
+.application-panel dt { font-weight: 650; }
+.application-panel dd { margin: 0 0 10px; }
+.application-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.application-panel .secondary-application { color: var(--forest); background: var(--wash); border-color: var(--line); }
+.application-return, #new-application { margin-top: 16px; }
+@media (max-width: 720px) { .apply-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 470px) { .apply-grid { grid-template-columns: 1fr; } }
