@@ -1,5 +1,6 @@
 const get = id => document.getElementById(id);
 const customerPortal = document.body.dataset.portal === 'customer';
+const customerDashboard = customerPortal ? await import('./customer-dashboard.js') : null;
 const report = message => { get('notice').textContent = message; };
 const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm').catch(() => {
   report('Sign-in service could not be loaded. Reload this page to retry.');
@@ -48,7 +49,7 @@ async function loadRecords() {
   const accountResults = async () => {
     if (!admin && !customerPortal) return accountQuery(basicColumns);
     const result = await accountQuery('id,suspended,' + basicColumns);
-    if (customerPortal && result.error?.code === '42703') return accountQuery(basicColumns);
+    if (customerPortal && result.error?.code === '42703') return accountQuery('id,' + basicColumns);
     return result;
   };
   const [accounts, transactions] = (await Promise.all([
@@ -61,21 +62,24 @@ async function loadRecords() {
     renderManagement(records, customer, accounts, transactions);
     return;
   }
-  if (accounts.length) appendList(records, 'Accounts · USD', accounts.map(
-    row => row.name + ' · ' + row.last_four + ' · ' + usd.format(row.balance_cents / 100) + (row.suspended ? ' · Suspended' : '')
-  ));
-  if (transactions.length) appendList(records, 'Transaction review · USD', transactions.map(
-    row => row.posted_on + ' · ' + row.description + ' · ' + row.account_id + ' · ' + usd.format(row.amount_cents / 100)
-  ));
-  if (!accounts.length && !transactions.length) records.textContent = 'No records are available for this customer.';
-  if (customerPortal) {
-    const active = accounts.filter(row => row.id && !row.suspended);
-    get('transfer-form').hidden = active.length < 2;
-    for (const id of ['transfer-from', 'transfer-to']) {
-      get(id).replaceChildren(...active.map(row => new Option(row.name + ' ••' + row.last_four, row.id)));
-    }
-    if (active.length > 1) get('transfer-to').selectedIndex = 1;
+  if (!customerPortal) {
+    if (accounts.length) appendList(records, 'Accounts · USD', accounts.map(
+      row => row.name + ' · ' + row.last_four + ' · ' + usd.format(row.balance_cents / 100) + (row.suspended ? ' · Suspended' : '')
+    ));
+    if (transactions.length) appendList(records, 'Transaction review · USD', transactions.map(
+      row => row.posted_on + ' · ' + row.description + ' · ' + row.account_id + ' · ' + usd.format(row.amount_cents / 100)
+    ));
+    if (!accounts.length && !transactions.length) records.textContent = 'No records are available for this customer.';
+    return;
   }
+  customerDashboard.showCustomerDashboard(accounts, transactions);
+  const active = accounts.filter(row => row.id && !row.suspended);
+  get('transfer-form').hidden = active.length < 2;
+  get('transfer-unavailable').hidden = active.length >= 2;
+  for (const id of ['transfer-from', 'transfer-to']) {
+    get(id).replaceChildren(...active.map(row => new Option(row.name + ' ••' + row.last_four, row.id)));
+  }
+  if (active.length > 1) get('transfer-to').selectedIndex = 1;
 }
 
 function renderManagement(records, customer, accounts, transactions) {
@@ -144,7 +148,10 @@ async function refresh() {
   admin = false;
   get(customerPortal ? 'customer-mfa' : 'staff-mfa').hidden = true;
   get('skip-mfa').hidden = true;
-  if (customerPortal) get('registration').hidden = true;
+  if (customerPortal) {
+    get('registration').hidden = true;
+    customerDashboard.clearCustomerDashboard();
+  }
   get('sign-in').hidden = Boolean(session);
   get('logout').hidden = !session;
   get('mfa').hidden = true;
@@ -210,10 +217,12 @@ async function refresh() {
   await loadRecords();
 }
 
-function bind(formId, action) {
-  get(formId).addEventListener('submit', async event => {
+function bind(formId, action, review) {
+  const form = get(formId);
+  form.addEventListener('submit', async event => {
     event.preventDefault();
-    const buttons = document.querySelectorAll('button');
+    if (review && !(await review())) return;
+    const buttons = form.querySelectorAll('button[type="submit"], button:not([type])');
     for (const button of buttons) button.disabled = true;
     report('');
     try { await action(); }
@@ -231,10 +240,6 @@ if (customerPortal) {
   bind('transfer-form', async () => {
     const from = get('transfer-from').value;
     const to = get('transfer-to').value;
-    if (from === to) {
-      report('Choose a different destination account.');
-      return;
-    }
     unwrap(await client.rpc('gt_transfer_usd', {
       source_account: from, destination_account: to,
       amount_cents: Math.round(get('transfer-amount').valueAsNumber * 100)
@@ -242,7 +247,7 @@ if (customerPortal) {
     get('transfer-form').reset();
     report('Transfer recorded.');
     await loadRecords();
-  });
+  }, customerDashboard.reviewCustomerTransfer);
   function showRegistration(open) {
     get('registration').hidden = !open;
     get('sign-in').hidden = open;

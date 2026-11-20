@@ -6,6 +6,7 @@
   <link rel="icon" type="image/svg+xml" href="./globaltrust-mark.svg"><title>Customer Sign-In | GlobalTrust Financial Bank</title>
   <link rel="stylesheet" href="./home.css">
   <link rel="stylesheet" href="./customer.css">
+  <link rel="stylesheet" href="./customer-dashboard.css">
 </head>
 <body id="top" data-portal="customer">
   <header class="masthead">
@@ -49,15 +50,60 @@
           </form>
         </section>
         <section id="portal" hidden>
-          <h2 id="customer-heading">Account overview</h2><select id="customer" hidden aria-label="Customer"></select>
-          <div id="records" aria-live="polite"></div>
-          <form id="transfer-form" hidden>
-            <h3>Transfer funds</h3>
-            <label for="transfer-from">From</label><select id="transfer-from" required></select>
-            <label for="transfer-to">To</label><select id="transfer-to" required></select>
-            <label for="transfer-amount">Amount in USD</label><input id="transfer-amount" type="number" min="0.01" max="21474836.47" step="0.01" required>
-            <button class="button">Transfer funds</button>
-          </form>
+          <div class="dashboard-title">
+            <h2 id="customer-heading">Account overview</h2>
+            <nav class="dashboard-nav" aria-label="Online Banking"><a href="#accounts">Accounts</a><a href="#activity">Activity</a><a href="#transfers">Transfers</a><a href="#support">Support</a></nav>
+          </div>
+          <section class="dashboard-summary" aria-label="Combined balance">
+            <div><p>Total balance</p><strong id="dashboard-total"></strong></div>
+            <div class="dashboard-summary-meta">USD · <span id="dashboard-count"></span></div>
+          </section>
+          <section id="accounts" aria-labelledby="dashboard-accounts-heading">
+            <h3 id="dashboard-accounts-heading">Your accounts</h3>
+            <select id="customer" hidden aria-label="Customer"></select>
+            <div id="records" class="bank-account-grid" aria-live="polite"></div>
+          </section>
+          <div class="dashboard-body">
+            <section id="activity" class="dashboard-card" aria-labelledby="activity-heading">
+              <div class="dashboard-transaction-title"><h3 id="activity-heading">Recent activity</h3><button class="button activity-export" id="activity-export" type="button" disabled>Export CSV</button></div>
+              <div class="activity-filters">
+                <label for="activity-search">Search<input id="activity-search" type="search" placeholder="Description or date"></label>
+                <label for="activity-account">Account<select id="activity-account"><option value="">All accounts</option></select></label>
+                <label for="activity-direction">Type<select id="activity-direction"><option value="">All activity</option><option value="in">Money in</option><option value="out">Money out</option></select></label>
+              </div>
+              <div class="activity-scroll" id="activity-table" hidden>
+                <table>
+                  <thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Account</th><th scope="col">Amount</th></tr></thead>
+                  <tbody id="activity-rows"></tbody>
+                </table>
+              </div>
+              <div class="activity-pagination">
+                <p id="activity-summary" role="status">Loading recent activity…</p>
+                <div><button class="button" id="activity-previous" type="button" disabled>Previous</button> <button class="button" id="activity-next" type="button" disabled>Next</button></div>
+              </div>
+            </section>
+            <div class="dashboard-side">
+              <section id="transfers" class="dashboard-card">
+                <h3>Transfer funds</h3><p id="transfer-unavailable" hidden>Transfers require two active accounts.</p>
+                <form id="transfer-form" hidden>
+                  <label for="transfer-from">From</label><select id="transfer-from" required></select>
+                  <label for="transfer-to">To</label><select id="transfer-to" required></select>
+                  <label for="transfer-amount">Amount in USD</label><input id="transfer-amount" type="number" min="0.01" max="21474836.47" step="0.01" required>
+                  <button class="button">Review transfer</button>
+                </form>
+              </section>
+              <section id="support" class="dashboard-card"><h3>Support</h3><a href="./live-chat.html">Live chat</a><a href="./help.html">Help Center</a><a href="./security.html">Security Center</a></section>
+              <section class="dashboard-card"><h3>Explore products</h3><a href="./checking.html#applications">Checking</a><a href="./savings.html#applications">Savings &amp; CDs</a><a href="./credit-cards.html#applications">Credit cards</a><a href="./#products">All products</a></section>
+            </div>
+          </div>
+          <dialog id="transfer-review" class="transfer-review" aria-labelledby="transfer-review-title">
+            <form method="dialog">
+              <h3 id="transfer-review-title">Review transfer</h3>
+              <dl><dt>Amount</dt><dd id="transfer-review-amount"></dd><dt>From</dt><dd id="transfer-review-from"></dd><dt>To</dt><dd id="transfer-review-to"></dd></dl>
+              <button type="submit" class="button" value="cancel" autofocus>Cancel</button>
+              <button type="submit" class="button" value="confirm">Confirm transfer</button>
+            </form>
+          </dialog>
         </section>
         <button class="form-link" id="customer-mfa" type="button" hidden>Set up an authenticator</button>
         <button class="button" id="logout" hidden>Sign out</button>
