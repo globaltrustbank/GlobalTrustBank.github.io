@@ -1,4 +1,5 @@
 const get = id => document.getElementById(id);
+const customerPortal = document.body.dataset.portal === 'customer';
 const report = message => { get('notice').textContent = message; };
 const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm').catch(() => {
   report('Sign-in service could not be loaded. Reload this page to retry.');
@@ -84,10 +85,17 @@ async function refresh() {
     get('mfa').hidden = false;
     return;
   }
-  const customers = unwrap(await client.from('gt_customers').select('id,display_name').order('display_name'));
+  let query = client.from('gt_customers').select('id,display_name').order('display_name');
+  if (customerPortal) query = query.eq('id', session.user.id);
+  const customers = unwrap(await query);
+  if (customerPortal && !customers.length) {
+    report('Your customer profile has not been set up yet.');
+    return;
+  }
   for (const customer of customers) {
     get('customer').add(new Option(customer.display_name, customer.id));
   }
+  if (customerPortal) get('customer-heading').textContent = 'Welcome, ' + customers[0].display_name;
   get('customer').disabled = !customers.length;
   get('portal').hidden = false;
   await loadRecords();
@@ -127,4 +135,6 @@ get('logout').addEventListener('click', async () => {
     await refresh();
   } catch (error) { report(error.message); }
 });
-refresh().catch(error => report(error.message));
+refresh().then(() => {
+  if (get('notice').textContent === 'Connecting to Online Banking…') report('');
+}).catch(error => report(error.message));
